@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>正在跳转...</title>
+</head>
+<body>
+    <p>正在为您跳转下载页面...</p>
+    <script>
+        (function() {
+            var ua = navigator.userAgent.toLowerCase();
+            // 配置你的下载链接
+            var iosUrl = "https://apps.apple.com/cn/app/%E4%B8%AD%E6%B2%B9%E6%99%BA%E8%A1%8C/id6739336800";
+            var androidUrl = "https://appgallery.huawei.com/app/C114411565?sharePrepath=ag&locale=zh_CN&source=appshare&subsource=C114411565&shareTo=weixin&shareFrom=appmarket&shareIds=0014d2aedd274662b82655a6b0357e9a_1&callType=SHARE";
+            
+            if (/iphone|ipad|ipod/.test(ua)) {
+                window.location.href = iosUrl;
+            } else if (/android/.test(ua)) {
+                window.location.href = androidUrl;
+            } else {
+                // PC端默认跳安卓或提示
+                window.location.href = androidUrl; 
+            }
+        })();
+    </script>
+</body>
+</html>
