@@ -2,356 +2,204 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>生日快乐 - 富鹏辉</title>
+<!-- 适配苹果13 Pro Max，禁止缩放、全屏 -->
+<meta name="viewport" content="width=390,height=844,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>宝宝生日快乐</title>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: "Microsoft YaHei", sans-serif;
-    }
+*{margin:0;padding:0;box-sizing:border-box;font-family:"PingFang SC",-apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif;}
+body{overflow:hidden;background:#fff;}
 
-    body {
-        overflow: hidden;
-        background: #ffe6f0;
-    }
+/* 第一页：密码弹窗（适配13PM） */
+.page1{width:100vw;height:100vh;background:linear-gradient(135deg,#ffe6f2,#fff0f8);display:flex;align-items:center;justify-content:center;position:fixed;top:0;left:0;z-index:10;}
+.login-card{width:340px;padding:40px 30px;background:#fff;border-radius:24px;box-shadow:0 8px 30px rgba(255,105,180,0.25);text-align:center;}
+.login-card h2{font-size:24px;color:#ff5b9e;margin-bottom:30px;}
+.name-txt{font-size:22px;font-weight:bold;color:#333;margin-bottom:25px;}
+#pwd{width:100%;height:48px;border:2px solid #ffc0d8;border-radius:12px;padding:0 16px;font-size:16px;outline:none;background:#fff5fa;margin-bottom:30px;}
+.btn-group{display:flex;gap:16px;justify-content:center;}
+.btn{width:100px;height:44px;border:none;border-radius:10px;font-size:15px;font-weight:500;cursor:pointer;transition:0.2s;}
+.confirm{background:#ff5b9e;color:#fff;}
+.cancel{background:#f5f5f5;color:#666;}
 
-    /* 页面1：密码登录弹窗 */
-    #page1 {
-        width: 100vw;
-        height: 100vh;
-        background: linear-gradient(135deg, #ffc0cb, #ffe6f0);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 10;
-    }
+/* 第二页：宝宝主题气泡（适配13PM） */
+.page2{width:100vw;height:100vh;background:#fff5fa;display:none;position:fixed;top:0;left:0;padding:15px;}
+.bubble{position:absolute;max-width:220px;padding:12px 18px;border-radius:22px;font-size:14px;color:#444;line-height:1.4;box-shadow:0 4px 12px rgba(255,182,193,0.2);opacity:0;transform:scale(0.5);transition:all 0.5s ease;}
+.bubble.show{opacity:1;transform:scale(1);}
 
-    .login-card {
-        width: 400px;
-        background: white;
-        border-radius: 24px;
-        padding: 50px 35px;
-        box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
-        text-align: center;
-    }
-
-    .login-card h2 {
-        color: #ff5ba3;
-        margin-bottom: 35px;
-        font-size: 26px;
-    }
-
-    .user-name {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 25px;
-    }
-
-    #password {
-        width: 100%;
-        height: 50px;
-        border: 2px solid #ffb6c1;
-        border-radius: 12px;
-        padding: 0 18px;
-        font-size: 16px;
-        outline: none;
-        margin-bottom: 30px;
-    }
-
-    .btn-box {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
-    }
-
-    .btn {
-        width: 110px;
-        height: 48px;
-        border: none;
-        border-radius: 10px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.3s;
-    }
-
-    .btn-yes {
-        background: #ff5ba3;
-        color: white;
-    }
-
-    .btn-no {
-        background: #f0f0f0;
-        color: #666;
-    }
-
-    /* 页面2：40条祝福气泡 */
-    #page2 {
-        width: 100vw;
-        height: 100vh;
-        background: #fff5fa;
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: none;
-        padding: 20px;
-    }
-
-    .bubble {
-        position: absolute;
-        max-width: 240px;
-        padding: 14px 20px;
-        border-radius: 20px;
-        font-size: 15px;
-        color: #444;
-        line-height: 1.5;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        opacity: 0;
-        transform: scale(0.6);
-        transition: all 0.5s ease;
-    }
-
-    .bubble.show {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    /* 页面3：粒子特效 */
-    #page3 {
-        width: 100vw;
-        height: 100vh;
-        background: #000;
-        position: fixed;
-        top: 0;
-        left: 0;
-        display: none;
-    }
-
-    #particleCanvas {
-        width: 100%;
-        height: 100%;
-    }
-
-    .text-wrap {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-    }
-
-    .t1 {
-        font-size: 46px;
-        color: #fff;
-        font-weight: bold;
-        letter-spacing: 6px;
-        margin-bottom: 15px;
-    }
-
-    .t2 {
-        font-size: 42px;
-        color: #ffd700;
-        font-weight: bold;
-        letter-spacing: 4px;
-    }
+/* 第三页：粒子聚焦（适配13PM） */
+.page3{width:100vw;height:100vh;background:#000;display:none;position:fixed;top:0;left:0;}
+#particleCanvas{width:100%;height:100%;}
+.text-wrap{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;}
+.text-top{font-size:42px;color:#fff;letter-spacing:6px;margin-bottom:12px;}
+.text-bot{font-size:38px;color:#ffd700;letter-spacing:4px;}
 </style>
 </head>
-
 <body>
-    <!-- 第一页：登录验证 -->
-    <div id="page1">
-        <div class="login-card">
-            <h2>生日专属通道</h2>
-            <div class="user-name">富鹏辉</div>
-            <input type="password" id="password" placeholder="">
-            <div class="btn-box">
-                <button class="btn btn-yes" onclick="check()">确定</button>
-                <button class="btn btn-no" onclick="clearPwd()">取消</button>
-            </div>
+
+<!-- 第一页：生日入口弹窗 -->
+<div class="page1" id="page1">
+    <div class="login-card">
+        <h2>生日专属通道</h2>
+        <div class="name-txt">富鹏辉</div>
+        <input type="password" id="pwd" placeholder="">
+        <div class="btn-group">
+            <button class="btn confirm" onclick="checkPwd()">确定</button>
+            <button class="btn cancel" onclick="clearPwd()">取消</button>
         </div>
     </div>
+</div>
 
-    <!-- 第二页：40条祝福气泡 -->
-    <div id="page2"></div>
+<!-- 第二页：30组宝宝生日气泡 -->
+<div class="page2" id="page2"></div>
 
-    <!-- 第三页：粒子汇聚 -->
-    <div id="page3">
-        <canvas id="particleCanvas"></canvas>
-        <div class="text-wrap">
-            <div class="t1">富鹏辉</div>
-            <div class="t2">Happy Birthday</div>
-        </div>
+<!-- 第三页：粒子聚焦画面 -->
+<div class="page3" id="page3">
+    <canvas id="particleCanvas"></canvas>
+    <div class="text-wrap">
+        <div class="text-top">宝宝</div>
+        <div class="text-bot">Happy Birthday</div>
     </div>
+</div>
 
-    <script>
-        // 40条富鹏辉主题生日祝福
-        const wishes = [
-            "富鹏辉，生日快乐，天天开心！",
-            "祝富鹏辉岁岁平安，万事顺遂",
-            "富鹏辉要永远被温柔包围✨",
-            "生日快乐！富鹏辉闪闪发光",
-            "愿富鹏辉所求皆如愿，所行化坦途",
-            "富鹏辉，新岁更胜旧岁",
-            "祝富鹏辉生活明朗，万物可爱",
-            "富鹏辉生日快乐，好运常在",
-            "愿富鹏辉无忧无虑，自在欢喜",
-            "富鹏辉，生辰快乐，未来可期",
-            "祝富鹏辉每天都有小幸运",
-            "富鹏辉要一直做最快乐的人",
-            "生日快乐！富鹏辉超可爱",
-            "愿富鹏辉被世界温柔以待",
-            "富鹏辉，平安喜乐，岁岁年年",
-            "祝富鹏辉前程似锦，一路繁花",
-            "富鹏辉生日快乐，幸福满满",
-            "愿富鹏辉心中有光，眼里有笑",
-            "富鹏辉，新的一岁更优秀",
-            "祝富鹏辉暴富暴美暴顺利",
-            "富鹏辉生日快乐，永远被偏爱",
-            "愿富鹏辉日子滚烫，快乐至上",
-            "富鹏辉，生辰吉乐，顺颂时宜",
-            "祝富鹏辉所有美好如约而至",
-            "富鹏辉，快乐不止生日这一天",
-            "愿富鹏辉岁岁常欢愉，年年皆胜意",
-            "富鹏辉，生日快乐，万事胜意",
-            "祝富鹏辉生活甜甜，好运连连",
-            "富鹏辉，新岁无忧，喜乐长安",
-            "愿富鹏辉永远保持热爱与天真",
-            "富鹏辉，生日快乐，心想事成",
-            "祝富鹏辉一路向阳，温暖如初",
-            "富鹏辉，愿你一生被爱包围",
-            "生日快乐！富鹏辉永远元气满满",
-            "愿富鹏辉所遇皆温柔，所得皆欢喜",
-            "富鹏辉，新的一岁，平安健康",
-            "祝富鹏辉笑容常在，幸福常伴",
-            "富鹏辉，生日快乐，未来闪闪发光",
-            "愿富鹏辉每一岁都奔走在热爱里",
-            "富鹏辉，生日快乐，永远幸福呀"
-        ];
+<script>
+// 30组「宝宝」主题生日祝福
+const wishes = [
+"宝宝生日快乐，天天甜甜蜜蜜✨",
+"可爱宝宝，岁岁平安喜乐",
+"祝宝宝新岁无忧，万事顺遂",
+"宝宝生辰快乐，永远被爱包围",
+"愿宝宝无忧无虑，自在欢喜",
+"宝宝要永远做快乐的小朋友",
+"生日快乐！宝宝超可爱哒",
+"愿宝宝被世界温柔以待",
+"宝宝平安喜乐，岁岁年年",
+"祝宝宝暴富变美，好运连连",
+"宝宝生日快乐，幸福满满",
+"愿宝宝心中有光，眼里有笑",
+"宝宝新一岁，越来越优秀",
+"祝宝宝万事胜意，惊喜不断",
+"宝宝生日快乐，永远被偏爱",
+"愿宝宝日子甜甜，快乐至上",
+"宝宝生辰吉乐，顺颂时宜",
+"祝宝宝所有美好如约而至",
+"宝宝快乐不止生日这一天",
+"愿宝宝岁岁常欢愉，年年皆胜意",
+"宝宝生日快乐，心想事成",
+"祝宝宝生活明朗，万物可爱",
+"宝宝生日快乐，好运常在",
+"愿宝宝每一岁都奔走在热爱里",
+"宝宝永远元气满满，活力四射",
+"祝宝宝笑容常在，幸福常伴",
+"宝宝生日快乐，未来闪闪发光",
+"愿宝宝平安健康，快乐长大",
+"宝宝生日快乐，永远幸福呀",
+"祝宝宝无忧无虑，快乐无忧"
+];
 
-        // 渐变配色（HelloKitty风）
-        const colors = [
-            "#ffdae9", "#ffe6f2", "#ffd6e0", "#fce1ee",
-            "#f9d8e8", "#ffcce7", "#feb6d7", "#ffd9e9"
-        ];
+// HelloKitty风渐变配色
+const colors = [
+"#ffdae9","#ffe6f2","#ffd6e0","#fce1ee",
+"#f9d8e8","#ffcce7","#feb6d7","#ffd9e9"
+];
 
-        // 密码验证
-        function check() {
-            let pwd = document.getElementById("password").value.trim();
-            if (pwd === "0526") {
-                page1.style.display = "none";
-                page2.style.display = "block";
-                startBubbles();
-            } else {
-                alert("密码错误");
-            }
-        }
+// 密码验证
+function checkPwd() {
+    const pwd = document.getElementById("pwd").value.trim();
+    if (pwd === "0526") {
+        document.getElementById("page1").style.display = "none";
+        document.getElementById("page2").style.display = "block";
+        startBubbles();
+    } else {
+        alert("密码错误");
+    }
+}
 
-        function clearPwd() {
-            document.getElementById("password").value = "";
-        }
+// 清空密码
+function clearPwd() {
+    document.getElementById("pwd").value = "";
+}
 
-        // 生成气泡并逐个弹出
-        function startBubbles() {
-            let box = document.getElementById("page2");
-            let count = 0;
-
-            wishes.forEach((txt, i) => {
-                let b = document.createElement("div");
-                b.className = "bubble";
-                b.innerText = txt;
-                b.style.background = colors[i % colors.length];
-
-                // 随机位置，防遮挡
-                let top = (10 + Math.random() * 78) + "%";
-                let left = (5 + Math.random() * 85) + "%";
-                b.style.top = top;
-                b.style.left = left;
-
-                box.appendChild(b);
-
-                // 依次弹出
+// 逐个生成气泡（适配13PM，防遮挡）
+function startBubbles() {
+    const page2 = document.getElementById("page2");
+    let count = 0;
+    wishes.forEach((text, index) => {
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        bubble.innerText = text;
+        bubble.style.background = colors[index % colors.length];
+        // 13PM适配随机位置，避免遮挡
+        const top = (8 + Math.random() * 78) + "%";
+        const left = (5 + Math.random() * 85) + "%";
+        bubble.style.top = top;
+        bubble.style.left = left;
+        page2.appendChild(bubble);
+        // 逐个弹出，间隔300ms
+        setTimeout(() => {
+            bubble.classList.add("show");
+            count++;
+            // 全部弹出后2.5秒跳转粒子页
+            if (count === wishes.length) {
                 setTimeout(() => {
-                    b.classList.add("show");
-                    count++;
+                    document.getElementById("page2").style.display = "none";
+                    document.getElementById("page3").style.display = "block";
+                    initParticle();
+                }, 2500);
+            }
+        }, index * 300);
+    });
+}
 
-                    // 全部弹出完成后跳转到第三页
-                    if (count === wishes.length) {
-                        setTimeout(() => {
-                            page2.style.display = "none";
-                            page3.style.display = "block";
-                            initParticle();
-                        }, 2800);
-                    }
-                }, i * 280);
-            });
+// 粒子聚焦特效（适配13PM）
+function initParticle() {
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
+    // 固定13PM分辨率
+    canvas.width = 390;
+    canvas.height = 844;
+    let particles = [];
+    const particleCount = 750;
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.tx = canvas.width / 2;
+            this.ty = canvas.height / 2;
+            this.size = Math.random() * 2.5 + 1;
+            this.color = `hsl(${Math.random() * 360}, 85%, 70%)`;
         }
-
-        // 第三页：粒子汇聚特效
-        function initParticle() {
-            const canvas = document.getElementById("particleCanvas");
-            const ctx = canvas.getContext("2d");
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            let particles = [];
-            let countP = 700;
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * canvas.width;
-                    this.y = Math.random() * canvas.height;
-                    this.dx = (Math.random() - 0.5) * 2;
-                    this.dy = (Math.random() - 0.5) * 2;
-                    this.size = Math.random() * 3 + 1.5;
-                    this.color = `hsl(${Math.random() * 360}, 85%, 70%)`;
-                }
-
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-
-                update() {
-                    this.x += this.dx * 0.6;
-                    this.y += this.dy * 0.6;
-                    if (this.x < 0 || this.x > canvas.width) this.dx *= -1;
-                    if (this.y < 0 || this.y > canvas.height) this.dy *= -1;
-                }
-            }
-
-            for (let i = 0; i < countP; i++) {
-                particles.push(new Particle());
-            }
-
-            function animate() {
-                ctx.fillStyle = "rgba(0,0,0,0.1)";
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                particles.forEach(p => {
-                    p.update();
-                    p.draw();
-                });
-                requestAnimationFrame(animate);
-            }
-
-            animate();
-
-            window.onresize = () => {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            };
+        update() {
+            const dx = this.tx - this.x;
+            const dy = this.ty - this.y;
+            this.x += dx * 0.03;
+            this.y += dy * 0.03;
         }
-    </script>
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.fill();
+        }
+    }
+
+    // 生成粒子
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+    }
+
+    // 粒子动画
+    function animate() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+    animate();
+}
+</script>
+
 </body>
 </html>
